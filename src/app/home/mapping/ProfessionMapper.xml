@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="app.home.dao.ProfessionMapper">
+<resultMap type="app.home.model.Profession" id="BaseResultMap">
+<id column="id" property="id" jdbcType="INTEGER"/>
+<result column="name" property="name" jdbcType="VARCHAR"/>
+<result column="counselor" property="counselor" jdbcType="VARCHAR"/>
+<result column="fid" property="fid" jdbcType="INTEGER"/>
+<result column="pnum" property="pnum" jdbcType="INTEGER"/>
+</resultMap>
+<sql id="Base_list_student">
+id,name,counselor,fid,pnum
+</sql>
+<select id="selectProfessionByPrimaryKey" resultMap="BaseResultMap">
+select 
+<include refid="Base_list_student"></include>
+FROM profession WHERE id=#{id,jdbcType=INTEGER}
+</select>
+</mapper>

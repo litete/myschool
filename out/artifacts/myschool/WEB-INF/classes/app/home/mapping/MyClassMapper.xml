@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="app.home.dao.MyClassMapper">
+<resultMap type="app.home.model.MyClass" id="BaseResultMap">
+<id column="id" property="id" jdbcType="INTEGER"/>
+<result column="name" property="name" jdbcType="VARCHAR"/>
+<result column="snum" property="snum" jdbcType="INTEGER"/>
+<result column="pid" property="pid" jdbcType="INTEGER"/>
+<result column="sign" property="sign" jdbcType="INTEGER"/>
+</resultMap>
+<!--student  -->
+<resultMap type="app.home.model.Student" id="BaseResultMapStudent">
+<id column="id" property="id" jdbcType="INTEGER"/>
+<result column="name" property="name" jdbcType="VARCHAR"/>
+<result column="sex" property="sex" jdbcType="VARCHAR"/>
+<result column="age" property="age" jdbcType="INTEGER"/>
+<result column="tel" property="tel" jdbcType="VARCHAR"/>
+<result column="email" property="email" jdbcType="VARCHAR"/>
+<result column="address" property="address" jdbcType="VARCHAR"/>
+<result column="cid" property="cid" jdbcType="INTEGER"/> 
+</resultMap>
+<!-- ClassInfoList -->
+<resultMap type="app.home.model.ClassInfoList" id="BaseResultMapClassInfoList">
+<result column="name" property="name" jdbcType="VARCHAR"/>
+<result column="name1" property="name1" jdbcType="INTEGER"/>
+<result column="name2" property="name2" jdbcType="INTEGER"/>
+<result column="date" property="date" jdbcType="VARCHAR"/>
+<result column="name3" property="name3" jdbcType="VARCHAR"/>
+<result column="name4" property="name4" jdbcType="VARCHAR"/>
+
+</resultMap>
+<!--teacher  -->
+<resultMap type="app.home.model.Teacher" id="BaseResultMapTeacher">
+<id column="id" property="id" jdbcType="INTEGER"/>
+<result column="tname" property="tname" jdbcType="VARCHAR"/>
+<result column="age" property="age" jdbcType="INTEGER"/>
+<result column="sex" property="sex" jdbcType="VARCHAR"/>
+<result column="tel" property="tel" jdbcType="VARCHAR"/>
+<result column="address" property="address" jdbcType="VARCHAR"/>
+<result column="email" property="email" jdbcType="VARCHAR"/>
+</resultMap>
+<!--查询老师  -->
+<select id="selectTeacherByPrimaryKey"  resultType="String">
+SELECT teacher.tname FROM teacher,myclass_teacher 
+WHERE teacher.id=myclass_teacher.tid AND myclass_teacher.cid=#{cid,jdbcType=INTEGER}
+</select>
+<!--查询课程等  -->
+<select id="selectClassInfo" resultType="java.util.HashMap">
+SELECT divice.id, divice.`name`,room.name_1,room.name_2,course.date,course.cname,teacher.tname
+FROM myclass_teacher,teacher,divice,myclass,room ,course
+WHERE myclass_teacher.cid=myclass.id 
+AND myclass_teacher.tid=teacher.id 
+AND myclass_teacher.did=divice.id 
+AND room.id=divice.room_id
+AND course.id=room.course_id
+AND myclass.id=#{cid,jdbcType=INTEGER}
+ORDER BY course.date and course.cname
+
+</select>
+
+<sql id="Base_Column_List">
+id,name,snum,pid,sign
+</sql>
+<!--student  -->
+<sql id="Base_Column_List_student">
+id,name,sex,age,tel,email,address,cid
+</sql>
+
+<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+select
+<include refid="Base_Column_List"/>
+from myclass where sign=#{sign,jdbcType=INTEGER}
+</select>
+
+<!--student  -->
+<select id="selectStudentByPrimaryKey" resultMap="BaseResultMapStudent" parameterType="java.lang.Integer">
+select 
+<include refid="Base_Column_List_student"></include>
+from student where cid=#{cid,jdbcType=INTEGER}
+</select>
+<!-- 根据学生id查询 -->
+<select id="selectStudentByid" resultMap="BaseResultMapStudent">
+select
+<include refid="Base_Column_List_student"></include>
+FROM student WHERE id=#{id,jdbcType=INTEGER}
+</select>
+
+<update id="updateStudent" parameterType="app.home.model.Student">
+update student SET 
+name=#{name,jdbcType=VARCHAR},
+sex=#{sex,jdbcType=VARCHAR},
+age=#{age,jdbcType=INTEGER},
+tel=#{tel,jdbcType=VARCHAR},
+address=#{address,jdbcType=VARCHAR},
+email=#{email,jdbcType=VARCHAR},
+cid=#{cid,jdbcType=INTEGER}
+WHERE id=#{id,jdbcType=INTEGER}
+</update>
+<delete id="deleteStudentByPrimaryKey" parameterType="java.lang.Integer">
+delete from student where id=#{id,jdbcType=INTEGER}
+</delete>
+<select id="selectBossId" resultType="INTEGER">
+SELECT divice.id,room.id,course.id,teacher.id 
+WHERE divice.`name`= 
+AND room.name_1=
+AND course.date=
+AND teacher.tname=
+</select>
+</mapper>
