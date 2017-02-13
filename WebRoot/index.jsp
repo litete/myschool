@@ -30,7 +30,7 @@
                 <li><a href="javascript:;">#maintab#</a></li>
             </ul>
 
-            <div class="navtab-panel tabsPageContent">
+            <div class="navtab-panel tabsPageContent" style="height: 814px;margin-top:11px">
                 <div class="navtabPage unitBox">
 
                     <div class="bjui-pageHeader" style="background:#FFF;">
